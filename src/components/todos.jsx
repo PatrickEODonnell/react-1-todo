@@ -1,8 +1,15 @@
 import React, { Component } from "react";
-import { getToDos } from "../services/fakeToDoService";
+import { getToDos, updateTodo } from "../services/fakeToDoService";
 class Todos extends Component {
   state = {
     todos: getToDos()
+  };
+  handleComplete = todo => {
+    todo.status = "Complete";
+    updateTodo(todo);
+    const todos = getToDos();
+
+    this.setState({ todos: todos });
   };
   render() {
     return (
@@ -21,7 +28,24 @@ class Todos extends Component {
               <td>{todo.description}</td>
               <td>{todo.assignedTo}</td>
               <td>{todo.dueDate}</td>
-              <td />
+              <td>
+                {todo.status === "Incomplete" ? (
+                  <button
+                    onClick={() => this.handleComplete(todo)}
+                    className="btn btn-warning btn-sm"
+                  >
+                    Outstanding
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => this.handleComplete(todo)}
+                    className="btn btn-success btn-sm"
+                    disabled
+                  >
+                    Completed
+                  </button>
+                )}
+              </td>
             </tr>
           ))}
         </tbody>

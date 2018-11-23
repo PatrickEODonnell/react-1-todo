@@ -1,4 +1,4 @@
-const todos = [
+let todos = [
   {
     _id: "5b21ca3eeb7f6fbccd471815",
     description: "Install React Chrome Tools",
@@ -21,7 +21,7 @@ const todos = [
     dueDate: "2018-12-03"
   },
   {
-    _id: "5b21ca3eeb7f6fbccd471416",
+    _id: "5b21ca3eeb7f6fbccd471818",
     description: "Add Insert function",
     assignedTo: "Patrick",
     status: "Incomplete",
@@ -33,6 +33,16 @@ export function getToDos() {
   return todos;
 }
 
-export function getGetToDo(id) {
+export function getToDo(id) {
   return todos.find(t => t._id === id);
+}
+
+export function updateTodo(todo) {
+  let todoToUpdate = getToDo(todo._id);
+  if (todoToUpdate) {
+    todoToUpdate.assignedTo = todo.assignedTo;
+    todoToUpdate.description = todo.description;
+    todoToUpdate.dueDate = todo.dueDate;
+    todoToUpdate.status = todo.status;
+  }
 }
