@@ -17,7 +17,7 @@ class Todos extends Component {
         </thead>
         <tbody>
           {this.state.todos.map(todo => (
-            <tr>
+            <tr key={todo._id}>
               <td>{todo.description}</td>
               <td>{todo.assignedTo}</td>
               <td>{todo.dueDate}</td>
