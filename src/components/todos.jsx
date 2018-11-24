@@ -7,16 +7,22 @@ class Todos extends Component {
     todos: getToDos()
   };
   handleComplete = todo => {
-    todo.status = "Complete";
+    // todo.status = "Complete";
     console.log(todo);
-    updateTodo(todo);
-    const todos = getToDos();
-    this.setState({ todos: todos });
+    const todos = [...this.state.todos];
+    const index = todos.indexOf(todo);
+    todos[index] = { ...todo };
+    todos[index].status = "Complete";
+    this.setState({ todos });
+    // updateTodo(todo);
+    // const todos = getToDos();
+    // this.setState({ todos: todos });
   };
+  handleAdd = todo => {};
   render() {
     return (
       <React.Fragment>
-        <AddTodo />
+        <AddTodo onAdd={this.handleAdd} />
         <table className="table">
           <thead>
             <tr>
