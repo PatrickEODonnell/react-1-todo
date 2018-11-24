@@ -3,7 +3,7 @@ let todos = [
     _id: "5b21ca3eeb7f6fbccd471815",
     description: "Install React Chrome Tools",
     assignedTo: "Patrick",
-    status: "Incomplete",
+    status: "Complete",
     dueDate: "2018-10-03"
   },
   {
