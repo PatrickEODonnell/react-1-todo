@@ -4,35 +4,37 @@ class AddTodo extends Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
   }
-  state = {
-    newTodo: this.todo,
-    onAdd: this.props.onAdd,
-    description: "",
-    assignedTo: "",
-    dueDate: "",
-    status: "Incomplete"
-  };
+  //   state = {
+  //     newTodo: this.todo,
+  //     onAdd: this.props.onAdd,
+  //     description: "",
+  //     assignedTo: "",
+  //     dueDate: "",
+  //     status: "Incomplete"
+  //   };
   handleChange(e) {
     //this.setState({ text: e.target.value });
     console.log(e.target.value, e.target);
     if (e.target.id === "description") {
-      this.setState({ description: e.target.value });
+      //   this.setState({ description: e.target.value });
+      this.props.todo.description = e.target.value;
     }
     if (e.target.id === "assignedTo") {
-      this.setState({ assignedTo: e.target.value });
+      this.props.todo.assignedTo = e.target.value;
     }
     if (e.target.id === "dueDate") {
-      this.setState({ dueDate: e.target.value });
+      this.props.todo.dueDate = e.target.value;
     }
     if (e.target.id === "status1" || e.target.id === "status2") {
-      this.setState({ status: e.target.value });
+      this.props.todo.status = e.target.value;
     }
+    console.log(this.props.todo);
   }
 
   render() {
     return (
       <React.Fragment>
-        <form onSubmit={this.state.onAdd(this.state.newTodo)}>
+        <form onSubmit={() => this.props.onAdd(this.props.todo)}>
           <h3>Add Todo</h3>
           <div className="form-group row">
             <label htmlFor="description" className="col-sm-2 col-form-label">
@@ -43,7 +45,6 @@ class AddTodo extends Component {
                 type="text"
                 className="form-control"
                 id="description"
-                value={this.state.description}
                 onChange={this.handleChange}
               />
             </div>
@@ -57,7 +58,6 @@ class AddTodo extends Component {
                 type="text"
                 className="form-control"
                 id="assignedTo"
-                value={this.state.assignedTo}
                 onChange={this.handleChange}
               />
             </div>
@@ -71,7 +71,6 @@ class AddTodo extends Component {
                 type="text"
                 className="form-control"
                 id="dueDate"
-                value={this.state.dueDate}
                 placeholder="yyyy-mm-dd"
                 onChange={this.handleChange}
               />

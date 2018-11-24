@@ -37,12 +37,13 @@ export function getToDo(id) {
   return todos.find(t => t._id === id);
 }
 
-export function updateTodo(todo) {
-  let todoToUpdate = getToDo(todo._id);
-  if (todoToUpdate) {
-    todoToUpdate.assignedTo = todo.assignedTo;
-    todoToUpdate.description = todo.description;
-    todoToUpdate.dueDate = todo.dueDate;
-    todoToUpdate.status = todo.status;
-  }
+export function createTodo() {
+  const todo = {
+    _id: "",
+    description: "",
+    assignedTo: "",
+    status: "Incomplete",
+    dueDate: ""
+  };
+  return todo;
 }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { getToDos, updateTodo } from "../services/fakeToDoService";
+import { getToDos, createTodo } from "../services/fakeToDoService";
 import TodoTd from "../components/todoTd";
 import AddTodo from "../components/addTodo";
 class Todos extends Component {
@@ -18,11 +18,20 @@ class Todos extends Component {
     // const todos = getToDos();
     // this.setState({ todos: todos });
   };
-  handleAdd = todo => {};
+  newTodo = createTodo();
+
+  handleAdd = todo => {
+    console.log("handleAdd");
+    // todo.status = "Incomplete";
+    const todos = [...this.state.todos];
+    todos.push(todo);
+    this.setState({ todos });
+  };
+
   render() {
     return (
       <React.Fragment>
-        <AddTodo onAdd={this.handleAdd} />
+        <AddTodo onAdd={this.handleAdd} todo={this.newTodo} />
         <table className="table">
           <thead>
             <tr>
