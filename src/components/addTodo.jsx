@@ -3,15 +3,9 @@ class AddTodo extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
-  //   state = {
-  //     newTodo: this.todo,
-  //     onAdd: this.props.onAdd,
-  //     description: "",
-  //     assignedTo: "",
-  //     dueDate: "",
-  //     status: "Incomplete"
-  //   };
+
   handleChange(e) {
     //this.setState({ text: e.target.value });
     console.log(e.target.value, e.target);
@@ -28,13 +22,17 @@ class AddTodo extends Component {
     if (e.target.id === "status1" || e.target.id === "status2") {
       this.props.todo.status = e.target.value;
     }
-    console.log(this.props.todo);
+  }
+  handleSubmit(e) {
+    console.log("handleSubmit");
+    e.preventDefault();
+    this.props.onAdd(this.props.todo);
   }
 
   render() {
     return (
       <React.Fragment>
-        <form onSubmit={() => this.props.onAdd(this.props.todo)}>
+        <form onSubmit={this.handleSubmit}>
           <h3>Add Todo</h3>
           <div className="form-group row">
             <label htmlFor="description" className="col-sm-2 col-form-label">
