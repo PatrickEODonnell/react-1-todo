@@ -36,7 +36,13 @@ class App extends Component {
     return (
       <main className="container">
         <AddTodo onAdd={this.handleAdd} todo={this.state.newTodo} />
-        <Todos todos={this.state.todos} onComplete={this.handleComplete} />
+        <Todos
+          todos={this.state.todos}
+          onComplete={this.handleComplete}
+          outstanding={
+            this.state.todos.filter(t => t.status === "Incomplete").length
+          }
+        />
       </main>
     );
   }

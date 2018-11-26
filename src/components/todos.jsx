@@ -5,6 +5,16 @@ class Todos extends Component {
   render() {
     return (
       <React.Fragment>
+        <div class="row">
+          <div class="col-md-3 col-sm-4">
+            <h3>
+              Todos{" "}
+              <span className="badge badge-secondary">
+                {this.props.outstanding}
+              </span>
+            </h3>
+          </div>
+        </div>
         <table className="table">
           <thead>
             <tr>
