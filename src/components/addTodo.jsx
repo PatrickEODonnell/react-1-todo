@@ -14,7 +14,6 @@ class AddTodo extends Component {
     status: "Incomplete"
   };
   handleChange(e) {
-    //this.setState({ text: e.target.value });
     console.log(e.target.value, e.target);
     if (e.target.id === "description") {
       this.setState({ description: e.target.value });

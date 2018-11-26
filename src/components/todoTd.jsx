@@ -6,7 +6,6 @@ class TodoTd extends Component {
         <td>{this.props.todo.description}</td>
         <td>{this.props.todo.assignedTo}</td>
         <td>{this.props.todo.dueDate}</td>
-        <td>{this.props.todo.status}</td>
         <td>
           {this.props.todo.status === "Incomplete" ? (
             <button
