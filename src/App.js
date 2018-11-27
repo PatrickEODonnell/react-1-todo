@@ -13,7 +13,6 @@ class App extends Component {
     const uuidv1 = require("uuid/v1");
     todo._id = uuidv1();
     console.log("handleAdd", todo);
-    // todo.status = "Incomplete";
     const todos = [...this.state.todos];
     todos.push(todo);
     this.setState({ todos });
@@ -22,7 +21,6 @@ class App extends Component {
   };
 
   handleComplete = todo => {
-    // todo.status = "Complete";
     console.log(todo);
     const todos = [...this.state.todos];
     const index = todos.indexOf(todo);

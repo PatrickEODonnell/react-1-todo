@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import TodoTd from "../components/todoTd";
+import TodoColumns from "./todoColumns";
 
 class Todos extends Component {
   render() {
@@ -27,7 +27,7 @@ class Todos extends Component {
           <tbody>
             {this.props.todos.map(todo => (
               <tr key={todo._id}>
-                <TodoTd todo={todo} onComplete={this.props.onComplete} />
+                <TodoColumns todo={todo} onComplete={this.props.onComplete} />
               </tr>
             ))}
           </tbody>

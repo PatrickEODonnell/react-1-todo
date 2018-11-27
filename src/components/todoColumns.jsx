@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-class TodoTd extends Component {
+class TodoColumns extends Component {
   render() {
     return (
       <React.Fragment>
@@ -25,4 +25,4 @@ class TodoTd extends Component {
   }
 }
 
-export default TodoTd;
+export default TodoColumns;
