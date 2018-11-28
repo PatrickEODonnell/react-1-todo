@@ -26,6 +26,20 @@ let todos = [
     assignedTo: "Patrick",
     status: "Incomplete",
     dueDate: "2018-12-24"
+  },
+  {
+    _id: "5b21ca3eeb7f6fbccd471819",
+    description: "Add Pagination",
+    assignedTo: "Sarah",
+    status: "Incomplete",
+    dueDate: "2018-12-03"
+  },
+  {
+    _id: "5b21ca3eeb7f6fbccd471820",
+    description: "Test Pagination",
+    assignedTo: "Patrick",
+    status: "Incomplete",
+    dueDate: "2018-12-24"
   }
 ];
 

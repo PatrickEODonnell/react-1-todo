@@ -14,7 +14,6 @@ class AddTodo extends Component {
     status: "Incomplete"
   };
   handleChange(e) {
-    console.log(e.target.value, e.target);
     if (e.target.id === "description") {
       this.setState({ description: e.target.value });
     }
@@ -29,7 +28,6 @@ class AddTodo extends Component {
     }
   }
   handleSubmit(e) {
-    console.log("handleSubmit");
     e.preventDefault();
     const newTodo = createTodo();
     newTodo.description = this.state.description;
