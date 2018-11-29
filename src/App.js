@@ -10,7 +10,8 @@ class App extends Component {
   state = {
     todos: getToDos(),
     itemsPerPage: 5,
-    currentPage: 1
+    currentPage: 1,
+    statusFilter: ""
   };
   handleAdd = todo => {
     const uuidv1 = require("uuid/v1");
@@ -29,29 +30,40 @@ class App extends Component {
   };
 
   handlePageChange = page => {
-    console.log(page);
     this.setState({ currentPage: page });
+  };
+  handleFilterChange = e => {
+    console.log(e.target.value);
+    const newStatusFilter = e.target.value;
+    this.setState({ statusFilter: newStatusFilter });
   };
 
   render() {
-    const { todos, itemsPerPage, currentPage } = this.state;
+    const { todos, itemsPerPage, currentPage, statusFilter } = this.state;
+    const filteredTodos =
+      statusFilter === "All" || statusFilter === ""
+        ? todos
+        : todos.filter(t => t.status === statusFilter);
     const todosForCurrentPage = paginate(
-      this.state.todos,
+      filteredTodos,
       this.state.currentPage,
       this.state.itemsPerPage
     );
     return (
       <main className="container">
         <AddTodo onAdd={this.handleAdd} />
+
         <Todos
           todos={todosForCurrentPage}
           onComplete={this.handleComplete}
           outstanding={
             this.state.todos.filter(t => t.status === "Incomplete").length
           }
+          statusFilter={statusFilter}
+          onFilterChange={this.handleFilterChange}
         />
         <Pagination
-          itemsCount={todos.length}
+          itemsCount={filteredTodos.length}
           itemsPerPage={itemsPerPage}
           onPageChange={this.handlePageChange}
           currentPage={currentPage}

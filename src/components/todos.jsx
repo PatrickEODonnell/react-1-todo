@@ -1,13 +1,29 @@
 import React, { Component } from "react";
 import TodoColumns from "./todoColumns";
 import TodosHeading from "./todosHeading";
-
+import StatusFilter from "./statusFilter";
 class Todos extends Component {
   render() {
-    const { todos, onComplete, outstanding } = this.props;
+    const {
+      todos,
+      onComplete,
+      outstanding,
+      statusFilter,
+      onFilterChange
+    } = this.props;
     return (
       <React.Fragment>
-        <TodosHeading outstanding={outstanding} />
+        <div className="row">
+          <div className="col-md-6">
+            <TodosHeading outstanding={outstanding} />
+          </div>
+          <div className="col-md-6">
+            <StatusFilter
+              statusFilter={statusFilter}
+              onFilterChange={onFilterChange}
+            />
+          </div>
+        </div>
         <table className="table">
           <thead>
             <tr>
