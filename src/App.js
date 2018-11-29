@@ -3,25 +3,21 @@ import Todos from "./components/todos";
 import AddTodo from "./components/addTodo";
 import Pagination from "./components/pagination";
 import { paginate } from "./utils/paginate";
-import { getToDos, createTodo } from "./services/fakeToDoService";
+import { getToDos } from "./services/fakeToDoService";
 import "./App.css";
 
 class App extends Component {
   state = {
     todos: getToDos(),
-    newTodo: createTodo(),
     itemsPerPage: 5,
     currentPage: 1
   };
   handleAdd = todo => {
     const uuidv1 = require("uuid/v1");
     todo._id = uuidv1();
-    console.log("handleAdd", todo);
     const todos = [...this.state.todos];
     todos.push(todo);
     this.setState({ todos });
-    const newTodo = createTodo();
-    this.setState({ newTodo });
   };
 
   handleComplete = todo => {
@@ -38,7 +34,7 @@ class App extends Component {
   };
 
   render() {
-    const { todos, itemsPerPage, currentPage, newTodo } = this.state;
+    const { todos, itemsPerPage, currentPage } = this.state;
     const todosForCurrentPage = paginate(
       this.state.todos,
       this.state.currentPage,
@@ -46,7 +42,7 @@ class App extends Component {
     );
     return (
       <main className="container">
-        <AddTodo onAdd={this.handleAdd} todo={newTodo} />
+        <AddTodo onAdd={this.handleAdd} />
         <Todos
           todos={todosForCurrentPage}
           onComplete={this.handleComplete}

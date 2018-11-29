@@ -30,10 +30,14 @@ class AddTodo extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const newTodo = createTodo();
+    // pass back to parent
     newTodo.description = this.state.description;
     newTodo.assignedTo = this.state.assignedTo;
     newTodo.dueDate = this.state.dueDate;
+    newTodo.status = this.state.status;
     this.props.onAdd(newTodo);
+
+    // reset the fields
     this.setState({ status: "Incomplete" });
     this.setState({ description: "" });
     this.setState({ assignedTo: "" });
@@ -100,7 +104,7 @@ class AddTodo extends Component {
                     id="status1"
                     value="Incomplete"
                     onChange={this.handleChange}
-                    checked
+                    checked={this.state.status === "Incomplete"}
                   />
                   <label className="form-check-label" htmlFor="status1">
                     Incomplete
@@ -114,6 +118,7 @@ class AddTodo extends Component {
                     id="status2"
                     value="Complete"
                     onChange={this.handleChange}
+                    checked={this.state.status === "Complete"}
                   />
                   <label className="form-check-label" htmlFor="status2">
                     Complete
