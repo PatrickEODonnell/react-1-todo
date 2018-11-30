@@ -44,7 +44,6 @@ let todos = [
 ];
 
 export function getToDos() {
-  console.log("getTodos");
   return todos;
 }
 

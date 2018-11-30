@@ -1,18 +1,26 @@
 import React, { Component } from "react";
-import Todos from "./components/todos";
 import AddTodo from "./components/addTodo";
 import Pagination from "./components/pagination";
+import TodosHeading from "./components/todosHeading";
+import TodosTable from "./components/todosTable";
+import StatusFilter from "./components/statusFilter";
 import { paginate } from "./utils/paginate";
 import { getToDos } from "./services/fakeToDoService";
 import "./App.css";
+import _ from "lodash";
 
 class App extends Component {
   state = {
-    todos: getToDos(),
+    todos: [],
     itemsPerPage: 5,
     currentPage: 1,
-    statusFilter: ""
+    statusFilter: "",
+    sortColumn: { column: "description", order: "asc" }
   };
+  componentDidMount() {
+    this.setState({ todos: getToDos() });
+  }
+
   handleAdd = todo => {
     const uuidv1 = require("uuid/v1");
     todo._id = uuidv1();
@@ -29,13 +37,17 @@ class App extends Component {
     this.setState({ todos });
   };
 
-  handlePageChange = page => {
-    this.setState({ currentPage: page });
-  };
   handleFilterChange = e => {
-    console.log(e.target.value);
     const newStatusFilter = e.target.value;
     this.setState({ statusFilter: newStatusFilter });
+    this.setState({ currentPage: 1 });
+  };
+  handleSort = column => {
+    this.setState({ sortColumn: column });
+  };
+
+  handlePageChange = page => {
+    this.setState({ currentPage: page });
   };
 
   render() {
@@ -44,8 +56,14 @@ class App extends Component {
       statusFilter === "All" || statusFilter === ""
         ? todos
         : todos.filter(t => t.status === statusFilter);
-    const todosForCurrentPage = paginate(
+
+    const sortedTodos = _.orderBy(
       filteredTodos,
+      [this.state.sortColumn.column],
+      [this.state.sortColumn.order]
+    );
+    const todosForCurrentPage = paginate(
+      sortedTodos,
       this.state.currentPage,
       this.state.itemsPerPage
     );
@@ -53,14 +71,27 @@ class App extends Component {
       <main className="container">
         <AddTodo onAdd={this.handleAdd} />
 
-        <Todos
+        <div className="row">
+          <div className="col-md-6">
+            <TodosHeading
+              outstanding={
+                this.state.todos.filter(t => t.status === "Incomplete").length
+              }
+            />
+          </div>
+          <div className="col-md-6">
+            <StatusFilter
+              statusFilter={statusFilter}
+              onFilterChange={this.handleFilterChange}
+            />
+          </div>
+        </div>
+
+        <TodosTable
           todos={todosForCurrentPage}
           onComplete={this.handleComplete}
-          outstanding={
-            this.state.todos.filter(t => t.status === "Incomplete").length
-          }
-          statusFilter={statusFilter}
-          onFilterChange={this.handleFilterChange}
+          onSort={this.handleSort}
+          sortColumn={this.state.sortColumn}
         />
         <Pagination
           itemsCount={filteredTodos.length}
