@@ -1,18 +1,30 @@
-import React from "react";
+import React, { Component } from "react";
+class TableHeader extends Component {
+  raiseSort = path => {
+    const sortColumn = { ...this.props.sortColumn };
+    if (sortColumn.path === path) {
+      sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
+    } else {
+      sortColumn.path = path;
+      sortColumn.order = "asc";
+    }
+    this.props.onSort(sortColumn);
+  };
 
-const TableHeader = props => {
-  const { onSort, columns } = props;
-  return (
-    <thead>
-      <tr>
-        {columns.map(column => (
-          <th key={column.path} onClick={() => onSort(column.path)}>
-            {column.label}
-          </th>
-        ))}
-      </tr>
-    </thead>
-  );
-};
+  render() {
+    const { onSort, columns } = this.props;
+    return (
+      <thead>
+        <tr>
+          {columns.map(column => (
+            <th key={column.path} onClick={() => this.raiseSort(column.path)}>
+              {column.label}
+            </th>
+          ))}
+        </tr>
+      </thead>
+    );
+  }
+}
 
 export default TableHeader;

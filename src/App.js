@@ -15,7 +15,7 @@ class App extends Component {
     itemsPerPage: 5,
     currentPage: 1,
     statusFilter: "",
-    sortColumn: { column: "description", order: "asc" }
+    sortColumn: { path: "description", order: "asc" }
   };
   componentDidMount() {
     this.setState({ todos: getToDos() });
@@ -58,7 +58,7 @@ class App extends Component {
 
     const sortedTodos = _.orderBy(
       filteredTodos,
-      [this.state.sortColumn.column],
+      [this.state.sortColumn.path],
       [this.state.sortColumn.order]
     );
     const todosForCurrentPage = paginate(
