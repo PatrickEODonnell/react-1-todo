@@ -1,6 +1,5 @@
 import React from "react";
-const TodosHeading = props => {
-  const { outstanding } = props;
+const TodosHeading = ({ outstanding }) => {
   return (
     <div className="row">
       <div className="col-md-12">

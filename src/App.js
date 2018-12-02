@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import AddTodo from "./components/addTodo";
 import Pagination from "./components/pagination";
 import TodosHeading from "./components/todosHeading";
-import TodosTable from "./components/todosTable";
+import Table from "./common/table";
 import StatusFilter from "./components/statusFilter";
 import CompleteButton from "./components/completeButton";
 import { paginate } from "./utils/paginate";
@@ -50,8 +50,8 @@ class App extends Component {
     this.setState({ currentPage: page });
   };
 
-  render() {
-    const { todos, itemsPerPage, currentPage, statusFilter } = this.state;
+  getPageData = () => {
+    const { statusFilter, todos } = this.state;
     const filteredTodos =
       statusFilter === "All" || statusFilter === ""
         ? todos
@@ -67,6 +67,14 @@ class App extends Component {
       this.state.currentPage,
       this.state.itemsPerPage
     );
+    return {
+      data: todosForCurrentPage,
+      itemsCount: todos.length
+    };
+  };
+
+  render() {
+    const { itemsPerPage, currentPage, statusFilter } = this.state;
     const columns = [
       {
         path: "description",
@@ -82,6 +90,7 @@ class App extends Component {
       },
       {
         path: "status",
+        label: "Status",
         content: todo => (
           <CompleteButton
             todo={todo}
@@ -90,6 +99,7 @@ class App extends Component {
         )
       }
     ];
+    const { data, itemsCount } = this.getPageData();
 
     return (
       <main className="container">
@@ -99,7 +109,8 @@ class App extends Component {
           <div className="col-md-6">
             <TodosHeading
               outstanding={
-                this.state.todos.filter(t => t.status === "Incomplete").length
+                //this.state.todos.filter(t => t.status === "Incomplete").length
+                data.filter(t => t.status === "Incomplete").length
               }
             />
           </div>
@@ -111,15 +122,14 @@ class App extends Component {
           </div>
         </div>
 
-        <TodosTable
-          todos={todosForCurrentPage}
-          onComplete={this.handleComplete}
+        <Table
+          data={data}
           onSort={this.handleSort}
           sortColumn={this.state.sortColumn}
           columns={columns}
         />
         <Pagination
-          itemsCount={filteredTodos.length}
+          itemsCount={itemsCount}
           itemsPerPage={itemsPerPage}
           onPageChange={this.handlePageChange}
           currentPage={currentPage}

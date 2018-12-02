@@ -14,7 +14,6 @@ class TableBody extends Component {
             {columns.map(column => (
               <td key={column.path}>{this.renderCell(item, column)}</td>
             ))}
-            {/* <TodoColumns item={item} onComplete={onComplete} /> */}
           </tr>
         ))}
       </tbody>

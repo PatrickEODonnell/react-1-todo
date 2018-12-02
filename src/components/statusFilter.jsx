@@ -1,7 +1,6 @@
 import React from "react";
 
-const StatusFilter = props => {
-  const { onFilterChange, statusFilter } = props;
+const StatusFilter = ({ onFilterChange, statusFilter }) => {
   return (
     <React.Fragment>
       <div className="btn-group btn-group-toggle" data-toggle="buttons">

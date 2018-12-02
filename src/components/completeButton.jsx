@@ -1,6 +1,5 @@
 import React from "react";
-const CompleteButton = props => {
-  const { todo, onComplete } = props;
+const CompleteButton = ({ todo, onComplete }) => {
   return (
     <button
       onClick={() => onComplete(todo)}
