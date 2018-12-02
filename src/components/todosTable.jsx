@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import TodoColumns from "./todoColumns";
-import TodoTableHeader from "./todoTableHeader";
+import TableHeader from "../common/tableHeader";
 class TodosTable extends Component {
   raiseSort = column => {
     const sortColumn = { ...this.props.sortColumn };
@@ -13,11 +13,11 @@ class TodosTable extends Component {
     this.props.onSort(sortColumn);
   };
   render() {
-    const { todos, onComplete } = this.props;
+    const { todos, onComplete, columns } = this.props;
 
     return (
       <table className="table">
-        <TodoTableHeader onSort={this.raiseSort} />
+        <TableHeader onSort={this.raiseSort} columns={columns} />
         <tbody>
           {todos.map(todo => (
             <tr key={todo._id}>

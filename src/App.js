@@ -20,7 +20,6 @@ class App extends Component {
   componentDidMount() {
     this.setState({ todos: getToDos() });
   }
-
   handleAdd = todo => {
     const uuidv1 = require("uuid/v1");
     todo._id = uuidv1();
@@ -67,6 +66,25 @@ class App extends Component {
       this.state.currentPage,
       this.state.itemsPerPage
     );
+    const columns = [
+      {
+        path: "description",
+        label: "Description"
+      },
+      {
+        path: "assignedTo",
+        label: "Assigned To"
+      },
+      {
+        path: "dueDate",
+        label: "Due Date"
+      },
+      {
+        path: "status",
+        label: "Status"
+      }
+    ];
+
     return (
       <main className="container">
         <AddTodo onAdd={this.handleAdd} />
@@ -92,6 +110,7 @@ class App extends Component {
           onComplete={this.handleComplete}
           onSort={this.handleSort}
           sortColumn={this.state.sortColumn}
+          columns={columns}
         />
         <Pagination
           itemsCount={filteredTodos.length}
