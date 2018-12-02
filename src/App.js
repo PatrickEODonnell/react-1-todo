@@ -4,6 +4,7 @@ import Pagination from "./components/pagination";
 import TodosHeading from "./components/todosHeading";
 import TodosTable from "./components/todosTable";
 import StatusFilter from "./components/statusFilter";
+import CompleteButton from "./components/completeButton";
 import { paginate } from "./utils/paginate";
 import { getToDos } from "./services/fakeToDoService";
 import "./App.css";
@@ -81,7 +82,12 @@ class App extends Component {
       },
       {
         path: "status",
-        label: "Status"
+        content: todo => (
+          <CompleteButton
+            todo={todo}
+            onComplete={() => this.handleComplete(todo)}
+          />
+        )
       }
     ];
 

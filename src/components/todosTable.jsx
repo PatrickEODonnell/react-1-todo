@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import TodoColumns from "./todoColumns";
+// import TodoColumns from "./todoColumns";
+import TableBody from "../common/tableBody";
 import TableHeader from "../common/tableHeader";
 class TodosTable extends Component {
   render() {
@@ -12,13 +13,7 @@ class TodosTable extends Component {
           columns={columns}
           sortColumn={sortColumn}
         />
-        <tbody>
-          {todos.map(todo => (
-            <tr key={todo._id}>
-              <TodoColumns todo={todo} onComplete={onComplete} />
-            </tr>
-          ))}
-        </tbody>
+        <TableBody data={todos} columns={columns} onComplete={onComplete} />
       </table>
     );
   }

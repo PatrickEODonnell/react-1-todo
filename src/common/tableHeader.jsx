@@ -12,7 +12,7 @@ class TableHeader extends Component {
   };
 
   render() {
-    const { onSort, columns } = this.props;
+    const { columns } = this.props;
     return (
       <thead>
         <tr>
