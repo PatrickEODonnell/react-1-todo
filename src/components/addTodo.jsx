@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Input from "../common/input";
 import { createTodo } from "../services/fakeToDoService";
 class AddTodo extends Component {
   constructor(props) {
@@ -8,90 +9,62 @@ class AddTodo extends Component {
   }
   state = {
     onAdd: this.props.onAdd,
-    description: "",
-    assignedTo: "",
-    dueDate: "",
-    status: "Incomplete"
+    todo: { description: "", assignedTo: "", dueDate: "", status: "Incomplete" }
   };
-  handleChange(e) {
-    if (e.target.id === "description") {
-      this.setState({ description: e.target.value });
-    }
-    if (e.target.id === "assignedTo") {
-      this.setState({ assignedTo: e.target.value });
-    }
-    if (e.target.id === "dueDate") {
-      this.setState({ dueDate: e.target.value });
-    }
-    if (e.target.id === "status1" || e.target.id === "status2") {
-      this.setState({ status: e.target.value });
-    }
+  handleChange({ currentTarget: input }) {
+    const todo = { ...this.state.todo };
+    todo[input.name] = input.value;
+    this.setState({ todo });
   }
   handleSubmit(e) {
     e.preventDefault();
+    const { description, assignedTo, dueDate, status } = this.state.todo;
     const newTodo = createTodo();
     // pass back to parent
-    newTodo.description = this.state.description;
-    newTodo.assignedTo = this.state.assignedTo;
-    newTodo.dueDate = this.state.dueDate;
-    newTodo.status = this.state.status;
+    newTodo.description = description;
+    newTodo.assignedTo = assignedTo;
+    newTodo.dueDate = dueDate;
+    newTodo.status = status;
     this.props.onAdd(newTodo);
+    console.log(newTodo);
 
     // reset the fields
-    this.setState({ status: "Incomplete" });
-    this.setState({ description: "" });
-    this.setState({ assignedTo: "" });
-    this.setState({ dueDate: "" });
+    const todo = { ...this.state.todo };
+    todo.description = "";
+    todo.assignedTo = "";
+    todo.dueDate = "";
+    todo.status = "Incomplete";
+    this.setState({ todo });
+    console.log(todo);
   }
 
   render() {
+    let { description, assignedTo, dueDate, status } = this.state.todo;
     return (
       <React.Fragment>
         <form onSubmit={this.handleSubmit}>
           <h3>Add Todo</h3>
-          <div className="form-group row">
-            <label htmlFor="description" className="col-sm-2 col-form-label">
-              Description
-            </label>
-            <div className="col-sm-10">
-              <input
-                type="text"
-                className="form-control"
-                id="description"
-                value={this.state.description}
-                onChange={this.handleChange}
-              />
-            </div>
-          </div>
-          <div className="form-group row">
-            <label htmlFor="assignedTo" className="col-sm-2 col-form-label">
-              Assigned To
-            </label>
-            <div className="col-sm-10">
-              <input
-                type="text"
-                className="form-control"
-                id="assignedTo"
-                value={this.state.assignedTo}
-                onChange={this.handleChange}
-              />
-            </div>
-          </div>
-          <div className="form-group row">
-            <label htmlFor="dueDate" className="col-sm-2 col-form-label">
-              Due Date
-            </label>
-            <div className="col-sm-10">
-              <input
-                type="text"
-                className="form-control"
-                id="dueDate"
-                placeholder="yyyy-mm-dd"
-                value={this.state.dueDate}
-                onChange={this.handleChange}
-              />
-            </div>
-          </div>
+          <Input
+            name="description"
+            value={description}
+            type="text"
+            onChange={this.handleChange}
+            label="Description"
+          />
+          <Input
+            name="assignedTo"
+            value={assignedTo}
+            type="text"
+            onChange={this.handleChange}
+            label="Assigned To"
+          />
+          <Input
+            name="dueDate"
+            value={dueDate}
+            type="text"
+            onChange={this.handleChange}
+            label="Due Date"
+          />
           <fieldset className="form-group">
             <div className="row">
               <legend className="col-form-label col-sm-2 pt-0">Complete</legend>
@@ -104,7 +77,7 @@ class AddTodo extends Component {
                     id="status1"
                     value="Incomplete"
                     onChange={this.handleChange}
-                    checked={this.state.status === "Incomplete"}
+                    checked={status === "Incomplete"}
                   />
                   <label className="form-check-label" htmlFor="status1">
                     Incomplete
@@ -118,7 +91,7 @@ class AddTodo extends Component {
                     id="status2"
                     value="Complete"
                     onChange={this.handleChange}
-                    checked={this.state.status === "Complete"}
+                    checked={status === "Complete"}
                   />
                   <label className="form-check-label" htmlFor="status2">
                     Complete
