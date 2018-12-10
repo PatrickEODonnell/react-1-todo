@@ -7,6 +7,7 @@ import StatusFilter from "./components/statusFilter";
 import CompleteButton from "./components/completeButton";
 import { paginate } from "./utils/paginate";
 import { getToDos } from "./services/fakeToDoService";
+import axios from "axios";
 import "./App.css";
 import _ from "lodash";
 
@@ -18,7 +19,7 @@ class App extends Component {
     statusFilter: "",
     sortColumn: { path: "description", order: "asc" }
   };
-  componentDidMount() {
+  async componentDidMount() {
     this.setState({ todos: getToDos() });
   }
   handleAdd = todo => {

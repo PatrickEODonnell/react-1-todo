@@ -1,7 +1,13 @@
-import React, { Component } from "react";
-import Input from "../common/input";
+import React from "react";
+import { ToastContainer } from "react-toastify";
+import Form from "../common/form";
+import Joi from "joi-browser";
 import { createTodo } from "../services/fakeToDoService";
-class AddTodo extends Component {
+import { toast } from "react-toastify";
+import httpService from "../services/httpService";
+import config from "../config.json";
+
+class AddTodo extends Form {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -9,62 +15,58 @@ class AddTodo extends Component {
   }
   state = {
     onAdd: this.props.onAdd,
-    todo: { description: "", assignedTo: "", dueDate: "", status: "Incomplete" }
+    data: {
+      id: "",
+      description: "",
+      assignedTo: "",
+      dueDate: "",
+      status: "Incomplete"
+    },
+    errors: {}
   };
-  handleChange({ currentTarget: input }) {
-    const todo = { ...this.state.todo };
-    todo[input.name] = input.value;
-    this.setState({ todo });
-  }
-  handleSubmit(e) {
-    e.preventDefault();
-    const { description, assignedTo, dueDate, status } = this.state.todo;
-    const newTodo = createTodo();
-    // pass back to parent
-    newTodo.description = description;
-    newTodo.assignedTo = assignedTo;
-    newTodo.dueDate = dueDate;
-    newTodo.status = status;
-    this.props.onAdd(newTodo);
-    console.log(newTodo);
-
-    // reset the fields
-    const todo = { ...this.state.todo };
-    todo.description = "";
-    todo.assignedTo = "";
-    todo.dueDate = "";
-    todo.status = "Incomplete";
-    this.setState({ todo });
-    console.log(todo);
-  }
-
+  schema = {
+    description: Joi.string()
+      .required()
+      .label("Description"),
+    assignedTo: Joi.string()
+      .required()
+      .label("Assigned To"),
+    dueDate: Joi.string()
+      .required()
+      .label("Due Date"),
+    status: Joi.string()
+      .required()
+      .label("Status"),
+    id: Joi.allow("")
+  };
+  addTodo = async todo => {
+    try {
+      const { data: post } = await httpService.post(config.apiEndPoint, todo);
+      this.props.history.replace("/todos");
+    } catch (ex) {
+      console.log("Add Todo Error: " + ex);
+    }
+  };
+  doSubmit = () => {
+    const { description, assignedTo, dueDate, status } = this.state.data;
+    const newData = createTodo();
+    // save the new Todo
+    newData.description = description;
+    newData.assignedTo = assignedTo;
+    newData.dueDate = dueDate;
+    newData.status = status;
+    this.addTodo(newData);
+  };
   render() {
-    let { description, assignedTo, dueDate, status } = this.state.todo;
+    let { status } = this.state.data;
     return (
       <React.Fragment>
+        <ToastContainer />
         <form onSubmit={this.handleSubmit}>
-          <h3>Add Todo</h3>
-          <Input
-            name="description"
-            value={description}
-            type="text"
-            onChange={this.handleChange}
-            label="Description"
-          />
-          <Input
-            name="assignedTo"
-            value={assignedTo}
-            type="text"
-            onChange={this.handleChange}
-            label="Assigned To"
-          />
-          <Input
-            name="dueDate"
-            value={dueDate}
-            type="text"
-            onChange={this.handleChange}
-            label="Due Date"
-          />
+          <h3>Add data</h3>
+          {this.renderInput("description", "Description")}
+          {this.renderInput("assignedTo", "Assigned To")}
+          {this.renderInput("dueDate", "Due Date")}
           <fieldset className="form-group">
             <div className="row">
               <legend className="col-form-label col-sm-2 pt-0">Complete</legend>
@@ -101,11 +103,7 @@ class AddTodo extends Component {
             </div>
           </fieldset>
           <div className="form-group row">
-            <div className="col-sm-10">
-              <button type="submit" className="btn btn-primary">
-                Add
-              </button>
-            </div>
+            <div className="col-sm-10">{this.renderButton("Add")}</div>
           </div>
         </form>
       </React.Fragment>

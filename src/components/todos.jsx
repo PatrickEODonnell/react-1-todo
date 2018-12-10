@@ -1,12 +1,16 @@
 import React, { Component } from "react";
+import { ToastContainer } from "react-toastify";
 import Pagination from "../components/pagination";
 import TodosHeading from "../components/todosHeading";
 import Table from "../common/table";
 import StatusFilter from "../components/statusFilter";
 import CompleteButton from "../components/completeButton";
 import { paginate } from "../utils/paginate";
-import { getToDos } from "../services/fakeToDoService";
+import httpService from "../services/httpService";
+import config from "../config.json";
 import _ from "lodash";
+
+const endPoint = "https://localhost:5001/api/todo";
 
 class Todos extends Component {
   state = {
@@ -16,16 +20,27 @@ class Todos extends Component {
     statusFilter: "",
     sortColumn: { path: "description", order: "asc" }
   };
-  componentDidMount() {
-    this.setState({ todos: getToDos() });
+  async componentDidMount() {
+    const { data: todos } = await httpService.get(config.apiEndPoint);
+    console.log(todos);
+    this.setState({ todos });
   }
 
-  handleComplete = todo => {
+  handleComplete = async todo => {
     const todos = [...this.state.todos];
     const index = todos.indexOf(todo);
     todos[index] = { ...todo };
     todos[index].status = "Complete";
-    this.setState({ todos });
+    const updatedTodo = todos[index];
+    try {
+      await httpService.put(
+        config.apiEndPoint + "/" + updatedTodo.id,
+        updatedTodo
+      );
+      this.setState({ todos });
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404) alert("Todo Not Found!");
+    }
   };
 
   handleFilterChange = e => {
@@ -63,7 +78,7 @@ class Todos extends Component {
     );
     return {
       data: todosForCurrentPage,
-      itemsCount: todos.length
+      itemsCount: sortedTodos.length
     };
   };
 
@@ -97,6 +112,7 @@ class Todos extends Component {
 
     return (
       <main className="container">
+        <ToastContainer />
         <div className="row">
           <div className="col-md-3">
             <TodosHeading
